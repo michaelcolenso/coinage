@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 const urlForCurrency = currency =>
   `https://api.coinmarketcap.com/v1/ticker/${currency}/`
 
+const urlForTicker = () =>
+  `https://www.cryptocompare.com/api/data/coinlist/`
+
 class CoinMarket extends Component {
   constructor(props) {
     super(props)
@@ -12,7 +15,7 @@ class CoinMarket extends Component {
   }
 
   componentDidMount() {
-    fetch(urlForCurrency(this.props.currency))
+    fetch(urlForTicker())
       .then(response => {
         if (!response.ok) {
           throw Error("Network request failed")
@@ -23,7 +26,7 @@ class CoinMarket extends Component {
       .then(d => d.json())
       .then(d => {
         this.setState({
-          coinMarketData: d[0]
+          coinData: d
         })
       }, () => {
         this.setState({
@@ -35,14 +38,19 @@ class CoinMarket extends Component {
   render() {
 
     if (this.state.requestFailed) return <p>Failed!</p>
-    if (!this.state.coinMarketData) return <p>Loading...</p>
+    if (!this.state.coinData) return <p>Loading...</p>
+
+    const dataArray = new Array;
+    for(var o in this.state.coinData['Data']) {
+      dataArray.push(this.state.coinData['Data'][o]);
+    }
+
     return (
       <div>
-        <h2>{this.state.coinMarketData.name}</h2>
-        <h3>{this.state.coinMarketData.rank}</h3>
-        <h3>${this.state.coinMarketData.price_usd}</h3>
-
-      </div>
+        <ul>
+          {dataArray.map(item => <li>{item.CoinName}</li>)}
+          </ul>
+        </div>
     )
   }
 }

@@ -6,7 +6,8 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-scripts": "1.0.10",
-    "recharts": "^1.0.0-alpha.1"
+    "recharts": "^1.0.0-alpha.1",
+    "victory": "^0.21.1"
   },
   "scripts": {
     "start": "react-scripts start",
